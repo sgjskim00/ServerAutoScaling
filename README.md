@@ -49,4 +49,5 @@ python run_project.py
 After training for 10,000 timesteps, the agent successfully learned the traffic pattern.
 - Graph Analysis: As shown in the result graph, the Active Server Count (Red line) dynamically follows the Traffic Load (Blue line).
 - Performance: The agent minimizes idle servers during low traffic (saving costs) and proactively scales out during high traffic (preventing overload).
- *(Please attach your result graph image here, e.g., ![Result Graph](./result_graph.png))_
+
+![Result Graph](./result_graph.png))_
