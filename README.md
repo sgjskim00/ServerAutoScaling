@@ -50,4 +50,4 @@ After training for 10,000 timesteps, the agent successfully learned the traffic 
 - Graph Analysis: As shown in the result graph, the Active Server Count (Red line) dynamically follows the Traffic Load (Blue line).
 - Performance: The agent minimizes idle servers during low traffic (saving costs) and proactively scales out during high traffic (preventing overload).
 
-![Result Graph](./result_graph.png))_
+![Result Graph](./result_graph.png)
