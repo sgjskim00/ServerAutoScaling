@@ -1,53 +1,72 @@
-# ServerAutoScaling
+# 강화학습 프로젝트: 클라우드 서버 오토스케일링 (Cloud Server Auto-scaling)
 
-Reinforcement Learning Project: Cloud Server Auto-scaling
-📌 Project Overview
-This project is submitted for the Reinforcement Learning course at Sogang University. The objective of this project is to design a Reinforcement Learning (RL) agent that optimizes cloud server auto-scaling. The agent learns to dynamically adjust the number of active servers based on fluctuating traffic patterns, aiming to minimize operational costs while maintaining service stability (avoiding overload).
+## 📌 프로젝트 개요 (Project Overview)
 
-🎯 Problem Definition
-We formulated the auto-scaling problem as a Markov Decision Process (MDP) with the following components:
+본 프로젝트는 **서강대학교 강화학습 교과목** 과제로 제출된 결과물입니다.
+이 프로젝트의 목표는 클라우드 서버의 **오토스케일링(Auto-scaling)을 최적화하는 강화학습(RL) 에이전트를 설계**하는 것입니다. 에이전트는 변동하는 트래픽 패턴에 따라 활성 서버(Active Server)의 수를 동적으로 조절하는 방법을 학습하며, 이를 통해 **서비스 안정성(과부하 방지)을 유지하면서 동시에 운영 비용을 최소화**하는 것을 목적으로 합니다.
 
-Environment
-A custom OpenAI Gymnasium environment (ServerAutoScalingEnv) simulates a cloud infrastructure where user traffic follows a sine wave pattern with random noise.
+## 🎯 문제 정의 (Problem Definition)
 
-Observation Space (State):
- - Current Traffic: The real-time volume of user requests.
- - Active Server Count: The number of servers currently running.
+오토스케일링 문제를 **MDP(Markov Decision Process)** 로 정의하였으며, 세부 구성 요소는 다음과 같습니다.
 
-Action Space:
- - 0 (Hold): Maintain the current number of servers.
- - 1 (Scale Out): Add one server.
- - 2 (Scale In): Remove one server.
+### 1\. 환경 (Environment)
 
-Reward Function:
- - Goal: Maximize Total Reward = Service Reliability - Operational Cost - Overload Penalty
- - Service Reliability: Positive reward for keeping the service alive.
- - Operational Cost: Negative reward proportional to the number of active servers.
-- Overload Penalty: Significant negative reward if traffic exceeds capacity.
+  - 사용자 트래픽이 랜덤 노이즈가 포함된 사인파(Sine wave) 패턴을 따르는 클라우드 인프라를 시뮬레이션하기 위해 커스텀 **OpenAI Gymnasium 환경(`ServerAutoScalingEnv`)** 을 구축했습니다.
 
-🛠️ Tech Stack & Algorithms
- - Language: Python 3.8+
- - Libraries: gymnasium, stable-baselines3, numpy, matplotlib
- - Algorithm: Proximal Policy Optimization (PPO)
-  : PPO was chosen for its stability and ease of hyperparameter tuning in continuous or discrete action spaces.
+### 2\. 관측 공간 (Observation Space / State)
 
-🚀 How to Run
-1. Clone the repository
-Bash
+  - **현재 트래픽 (Current Traffic):** 실시간 사용자 요청량
+  - **활성 서버 수 (Active Server Count):** 현재 가동 중인 서버의 개수
+
+### 3\. 행동 공간 (Action Space)
+
+  - **0 (Hold):** 현 상태 유지
+  - **1 (Scale Out):** 서버 1대 증설
+  - **2 (Scale In):** 서버 1대 축소
+
+### 4\. 보상 함수 (Reward Function)
+
+  - **목표:** 총 보상(Total Reward) 최대화
+    $$Total Reward = Service Reliability - Operational Cost - Overload Penalty$$
+  - **서비스 신뢰성 (Service Reliability):** 서비스가 정상 가동될 때 양(+)의 보상 부여
+  - **운영 비용 (Operational Cost):** 활성 서버 수에 비례하여 음(-)의 보상(비용) 부여
+  - **과부하 페널티 (Overload Penalty):** 트래픽이 수용 용량을 초과할 경우 큰 폭의 음(-)의 보상 부여
+
+## 🛠️ 기술 스택 및 알고리즘 (Tech Stack & Algorithms)
+
+  - **Language:** Python 3.8+
+  - **Libraries:** `gymnasium`, `stable-baselines3`, `numpy`, `matplotlib`
+  - **Algorithm:** **PPO (Proximal Policy Optimization)**
+      - PPO는 연속적 혹은 이산적 행동 공간에서 하이퍼파라미터 튜닝이 용이하고 학습 안정성이 뛰어나 본 프로젝트의 알고리즘으로 채택되었습니다.
+
+## 🚀 실행 방법 (How to Run)
+
+**1. 레포지토리 클론**
+
+```bash
 git clone https://github.com/sgjskim00/ServerAutoScaling.git
 cd ServerAutoScaling
+```
 
-2. Install dependencies
-Bash
+**2. 의존성 라이브러리 설치**
+
+```bash
 pip install gymnasium stable-baselines3 shimmy matplotlib
+```
 
-3.Run the training script
-Bash
+**3. 학습 스크립트 실행**
+
+```bash
 python run_project.py
+```
 
-📊 Experimental Results
-After training for 10,000 timesteps, the agent successfully learned the traffic pattern.
-- Graph Analysis: As shown in the result graph, the Active Server Count (Red line) dynamically follows the Traffic Load (Blue line).
-- Performance: The agent minimizes idle servers during low traffic (saving costs) and proactively scales out during high traffic (preventing overload).
+## 📊 실험 결과 (Experimental Results)
+
+약 10,000 타임스텝(Timesteps) 동안 학습을 진행한 결과, 에이전트는 트래픽 패턴을 성공적으로 학습했습니다.
+
+  * **그래프 분석:** 결과 그래프에서 확인할 수 있듯이, **활성 서버 수(Red line)** 가 **트래픽 부하(Blue line)** 의 변동에 따라 동적으로 조절되는 모습을 보입니다.
+  * **성능 평가:**
+      * 트래픽이 낮은 구간에서는 불필요한 유휴 서버를 최소화하여 **비용을 절감**합니다.
+      * 트래픽이 급증하는 구간에서는 선제적으로 서버를 확장(Scale out)하여 **과부하를 방지**합니다.
 
 ![Result Graph](./result_graph.png)
